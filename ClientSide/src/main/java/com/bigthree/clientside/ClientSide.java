@@ -3,6 +3,6 @@ package com.bigthree.clientside;
 public class ClientSide {
 
     public static void main(String[] args) {
-        System.out.println("Hello World!");
+        Login_page obj = new Login_page();
     }
 }
