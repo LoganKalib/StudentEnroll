@@ -52,22 +52,22 @@ public final class ServerConnection {
     public Student getStudLogin(Student stud) throws IOException, ClassNotFoundException {
         out.writeObject(stud);
         out.flush();
-        Student fromServer = (Student) in.readObject();
-        if (fromServer == null) {
-            return null;
-        } else {
+        try {
+            Student fromServer = (Student) in.readObject();
             return fromServer;
+        } catch (Exception ex) {
+            return null;
         }
     }
 
     public Admin getAdminLogin(Admin admin) throws IOException, ClassNotFoundException {
         out.writeObject(admin);
         out.flush();
-        Admin fromServer = (Admin) in.readObject();
-        if (fromServer == null) {
-            return null;
-        } else {
+        try {
+            Admin fromServer = (Admin) in.readObject();
             return fromServer;
+        } catch (Exception ex) {
+            return null;
         }
     }
 

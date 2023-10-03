@@ -79,9 +79,9 @@ public class Login_Page extends JFrame implements ActionListener {
                         if(fromServer == null){
                             JOptionPane.showMessageDialog(null, "this user does not Exist.");
                         }else{
-                            con.closeAll();
                             JOptionPane.showMessageDialog(null, "Welcome " + fromServer.toString());
                             Student_Page Stud = new Student_Page(fromServer);
+                            con.closeAll();
                             this.dispose();
                         }
                     } catch (IOException | ClassNotFoundException ex) {
