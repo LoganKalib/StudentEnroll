@@ -12,7 +12,7 @@ public final class ServerConnection {
     private final Socket server;
     private ObjectOutputStream out;
     private ObjectInputStream in;
-    private String response;
+    private Object response;
 
     public ServerConnection() throws IOException, ClassNotFoundException {
         server = new Socket("127.0.0.1", 12345);
@@ -38,9 +38,10 @@ public final class ServerConnection {
 
     public void communicate() throws IOException, ClassNotFoundException {
         do {
-            response = (String) in.readObject();
-            System.out.println(response);
-        } while (!response.equalsIgnoreCase("Terminate"));
+            response = in.readObject();
+            System.out.println(response.toString());
+        } while (!response.toString().equalsIgnoreCase("Terminate"));
+        closeAll();
     }
 
     public void closeAll() throws IOException {
