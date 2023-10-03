@@ -1,5 +1,6 @@
 package com.bigthree.clientside;
 
+import com.bigthree.objects.Admin;
 import java.awt.BorderLayout;
 import java.awt.GridLayout;
 import java.awt.event.ActionEvent;
@@ -15,7 +16,12 @@ public class Admin_Page extends JFrame implements ActionListener{
     private JTextField txtStudName, txtStudSurname, txtStudNumber, txtStudPassword, txtCourseCode, txtCourseName, txtCoursePrice;
     private JButton btnRegStud, btnRegCourse, btnExit, btnExitStud;
 
-    public Admin_Page() {
+    private Admin loggedin;
+    
+    public Admin_Page(Admin admin) {
+        
+        loggedin = admin;
+        
         this.setLayout(new BorderLayout());
         this.setTitle("Admin Page");
 

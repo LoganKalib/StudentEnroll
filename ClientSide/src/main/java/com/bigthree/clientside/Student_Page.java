@@ -1,32 +1,43 @@
 package com.bigthree.clientside;
 
+import com.bigthree.objects.Student;
 import java.awt.BorderLayout;
-import java.awt.GridLayout;
 import javax.swing.*;
 import javax.swing.border.EmptyBorder;
 
 public class Student_Page extends JFrame {
 
-    private JTabbedPane main;
-    private JPanel left, right;
-    private JList allCourses, allEnrolled;
-    private DefaultListModel dmlCourses, dmlEnrolled;
-    private JButton btnRegister, btnExit;
+    private final JTabbedPane main;
+    private final JPanel left;
+    private final JPanel right;
+    private final JList allCourses;
+    private final JList allEnrolled;
+    private final DefaultListModel dmlCourses;
+    private final DefaultListModel dmlEnrolled;
+    private final JButton btnRegister;
+    private final JButton btnExit;
 
-    public Student_Page() {
+    private final Student loggedin;
+    
+    public Student_Page(Student stud) {
+        
+        loggedin = stud;
+        System.out.println(loggedin.toString());
         this.setTitle("Student Page");
         this.setLayout(new BorderLayout());
 
         main = new JTabbedPane();
         left = new JPanel();
         right = new JPanel();
-
-        allCourses = new JList();
-        allEnrolled = new JList();
-        allEnrolled.setEnabled(false);
-
+        
         dmlCourses = new DefaultListModel();
         dmlEnrolled = new DefaultListModel();
+
+        allCourses = new JList(dmlCourses);
+        allEnrolled = new JList(dmlEnrolled);
+        allEnrolled.setEnabled(false);
+
+        
 
         btnRegister = new JButton("Register");
         btnExit = new JButton("Exit");
