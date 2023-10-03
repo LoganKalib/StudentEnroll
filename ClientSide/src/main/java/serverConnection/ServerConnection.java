@@ -17,7 +17,6 @@ public final class ServerConnection {
     public ServerConnection() throws IOException, ClassNotFoundException {
         server = new Socket("127.0.0.1", 12345);
         getStreams();
-        communicate();
     }
 
     private void getStreams() throws IOException {

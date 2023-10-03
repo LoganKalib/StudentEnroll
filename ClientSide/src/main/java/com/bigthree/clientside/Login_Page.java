@@ -18,7 +18,7 @@ public class Login_Page extends JFrame implements ActionListener {
     private JLabel lblName, lblPass;
     private JTextField txtUsername, txtPassword;
     private JButton btnLogin, btnExit;
-    private ServerConnection con;
+    private ServerConnection con = new ServerConnection();;
 
     public Login_Page() throws IOException, ClassNotFoundException {
         this.setLayout(new BorderLayout());
@@ -56,8 +56,6 @@ public class Login_Page extends JFrame implements ActionListener {
         this.setVisible(true);
         this.pack();
         this.setLocationRelativeTo(null);
-
-        con = new ServerConnection();
     }
 
     @Override
