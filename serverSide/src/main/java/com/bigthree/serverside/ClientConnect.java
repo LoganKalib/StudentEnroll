@@ -45,6 +45,7 @@ public class ClientConnect {
                 break;
             }
             
+            
         } while (!response.toString().equalsIgnoreCase("Terminate"));
         closeAll();
     }
