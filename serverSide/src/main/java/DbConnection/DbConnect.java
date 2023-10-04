@@ -7,8 +7,8 @@ import java.sql.*;
  * @author logan
  */
 public class DbConnect {
-    private static final String DB_URL = "jdbc:derby://localhost:1527/Eventuality2.0";
-    private static final String DB_USER = "APP";
+    private static final String DB_URL = "jdbc:derby://localhost:1527/StudentEnrollment";
+    private static final String DB_USER = "ADMINISTRATOR";
     private static final String DB_PASSWORD = "Password";
     
     private static DbConnect instance;
