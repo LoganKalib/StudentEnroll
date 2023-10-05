@@ -105,6 +105,14 @@ public class Login_Page extends JFrame implements ActionListener {
                 }
 
             }
+        } else if(e.getSource() == btnExit){
+            try {
+                con.sendData("Terminate");
+                con.closeAll();
+                this.dispose();
+            } catch (IOException ex) {
+                Logger.getLogger(Login_Page.class.getName()).log(Level.SEVERE, null, ex);
+            }
         }
 
     }
