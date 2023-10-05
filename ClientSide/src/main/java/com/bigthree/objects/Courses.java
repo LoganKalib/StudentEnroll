@@ -1,6 +1,8 @@
 package com.bigthree.objects;
 
-public class Courses {
+import java.io.Serializable;
+
+public class Courses implements Serializable{
     private String code, name;
     private int price;
 

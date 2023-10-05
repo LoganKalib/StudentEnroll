@@ -1,6 +1,8 @@
 package com.bigthree.objects;
 
-public class Enrolled {
+import java.io.Serializable;
+
+public class Enrolled implements Serializable{
     private int StudNum;
     private String code;
 
