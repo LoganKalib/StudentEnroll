@@ -1,11 +1,14 @@
 package serverConnection;
 
 import com.bigthree.objects.Admin;
+import com.bigthree.objects.Courses;
+import com.bigthree.objects.Enrolled;
 import com.bigthree.objects.Student;
 import java.io.IOException;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
 import java.net.Socket;
+import java.util.ArrayList;
 
 public final class ServerConnection {
 
@@ -35,14 +38,6 @@ public final class ServerConnection {
         out.flush();
     }
 
-    public void communicate() throws IOException, ClassNotFoundException {
-        do {
-            response = in.readObject();
-            System.out.println(response.toString());
-        } while (!response.toString().equalsIgnoreCase("Terminate"));
-        closeAll();
-    }
-
     public void closeAll() throws IOException {
         server.close();
         in.close();
@@ -67,6 +62,30 @@ public final class ServerConnection {
             Admin fromServer = (Admin) in.readObject();
             return fromServer;
         } catch (Exception ex) {
+            return null;
+        }
+    }
+    
+    public ArrayList<Courses> getCourses() throws IOException{
+        out.writeObject((String) "getCourses");
+        out.flush();
+        ArrayList<Courses> reArr = new ArrayList();
+        try{
+            reArr = (ArrayList<Courses>) in.readObject();
+            return reArr;
+        }catch(Exception ex){
+           return null;
+        }
+    }
+    
+    public ArrayList<Enrolled> getEnrolled() throws IOException, ClassNotFoundException{
+        out.writeObject((String) "getEnrolled");
+        out.flush();
+        ArrayList<Enrolled> reArr = new ArrayList();
+        try{
+            reArr = (ArrayList<Enrolled>) in.readObject();
+            return reArr;
+        }catch(Exception ex){
             return null;
         }
     }
