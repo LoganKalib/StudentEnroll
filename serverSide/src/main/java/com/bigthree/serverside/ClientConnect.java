@@ -50,6 +50,7 @@ public class ClientConnect {
                     DbConnect db = DbConnect.getInstance();
                     Student studData;
                     studData = studDAO.selectStudent(db.getConnection(), stud);
+                    System.out.println(studData);
                     out.writeObject(studData);
                     out.flush();
                 } else {
