@@ -63,6 +63,8 @@ public class ClientConnect {
                 Admin admin = (Admin) response;
                 out.writeObject(adminDAO.selectAdmin(db.getConnection(), admin));
                 out.flush();
+            } else if (response instanceof Courses) {
+
             } else if (response instanceof String) {
                 String command = (String) response;
                 if (command.equalsIgnoreCase("getCourses")) {
@@ -72,8 +74,6 @@ public class ClientConnect {
                     out.writeObject(enrolledDAO.getStudRecords(db.getConnection()));
                     out.flush();
                 }
-            } else if(response instanceof Courses){
-                
             }
 
         } while (!response.toString().equalsIgnoreCase("Terminate"));
