@@ -1,9 +1,12 @@
 package com.bigthree.serverside;
 
 import DbConnection.AdminDAO;
+import DbConnection.CoursesDAO;
 import DbConnection.DbConnect;
+import DbConnection.EnrolledDAO;
 import DbConnection.StudentDAO;
 import com.bigthree.objects.Admin;
+import com.bigthree.objects.Courses;
 import com.bigthree.objects.Student;
 import java.io.IOException;
 import java.io.ObjectInputStream;
@@ -21,6 +24,9 @@ public class ClientConnect {
     private Object response;
     private StudentDAO studDAO = new StudentDAO();
     private AdminDAO adminDAO = new AdminDAO();
+    private CoursesDAO coursesDAO = new CoursesDAO();
+    private EnrolledDAO enrolledDAO = new EnrolledDAO();
+    DbConnect db = DbConnect.getInstance();
 
     public ClientConnect() throws IOException, ClassNotFoundException, SQLException {
         listenForClients();
@@ -47,25 +53,31 @@ public class ClientConnect {
             if (response instanceof Student) {
                 Student stud = (Student) response;
                 if (stud.getName() == null && stud.getSurname() == null) {
-                    DbConnect db = DbConnect.getInstance();
-                    Student studData;
-                    studData = studDAO.selectStudent(db.getConnection(), stud);
-                    System.out.println(studData);
-                    out.writeObject(studData);
+                    out.writeObject(studDAO.selectStudent(db.getConnection(), stud));
                     out.flush();
                 } else {
-                    DbConnect db = DbConnect.getInstance();
                     out.writeObject(studDAO.createStudent(db.getConnection(), stud));
                     out.flush();
                 }
             } else if (response instanceof Admin) {
                 Admin admin = (Admin) response;
-                DbConnect db = DbConnect.getInstance();
                 out.writeObject(adminDAO.selectAdmin(db.getConnection(), admin));
                 out.flush();
+            } else if (response instanceof String) {
+                String command = (String) response;
+                if (command.equalsIgnoreCase("getCourses")) {
+                    out.writeObject(coursesDAO.getCourses(db.getConnection()));
+                    out.flush();
+                } else if (command.equalsIgnoreCase("getEnrolled")) {
+                    out.writeObject(enrolledDAO.getStudRecords(db.getConnection()));
+                    out.flush();
+                }
+            } else if(response instanceof Courses){
+                
             }
 
         } while (!response.toString().equalsIgnoreCase("Terminate"));
+        db.closeAll();
         closeAll();
     }
 

@@ -71,7 +71,7 @@ public class Student_Page extends JFrame {
 
         ArrayList<Courses> display = con.getCourses();
         if(display == null){
-            JOptionPane.showMessageDialog(null, "ERROR: (Courses) Server Call failed.");
+            JOptionPane.showMessageDialog(null, "Currently no Courses.");
         }else{
             for(var i:display){
                 dmlCourses.addElement(i.toString());
@@ -79,14 +79,12 @@ public class Student_Page extends JFrame {
         }
         
         ArrayList<Enrolled> displayEn = con.getEnrolled();
-        if(display == null){
-            JOptionPane.showMessageDialog(null, "ERROR:(Enrolled) Server Call failed.");
-        }else if (!display.isEmpty()){
-            for(var i:display){
+        if(displayEn == null){
+            JOptionPane.showMessageDialog(null, "No enrolled Courses.");
+        }else{
+            for(var i:displayEn){
                 dmlEnrolled.addElement(i.toString());
             }
-        }else{
-            dmlEnrolled.addElement("No enrolled Courses.");
         }
 
     }
