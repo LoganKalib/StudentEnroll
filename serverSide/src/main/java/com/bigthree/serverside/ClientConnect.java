@@ -7,6 +7,7 @@ import DbConnection.EnrolledDAO;
 import DbConnection.StudentDAO;
 import com.bigthree.objects.Admin;
 import com.bigthree.objects.Courses;
+import com.bigthree.objects.NewEnroll;
 import com.bigthree.objects.Student;
 import java.io.IOException;
 import java.io.ObjectInputStream;
@@ -64,6 +65,9 @@ public class ClientConnect {
                 out.writeObject(adminDAO.selectAdmin(db.getConnection(), admin));
                 out.flush();
             } else if (response instanceof Courses) {
+                Courses course = (Courses) response;
+                out.writeObject(coursesDAO.newCourse(db.getConnection(), course));
+                out.flush();
 
             } else if (response instanceof String) {
                 String command = (String) response;
@@ -74,6 +78,10 @@ public class ClientConnect {
                     out.writeObject(enrolledDAO.getStudRecords(db.getConnection()));
                     out.flush();
                 }
+            } else if(response instanceof NewEnroll){
+                NewEnroll obj = (NewEnroll) response;
+                out.writeObject(enrolledDAO.createNew(db.getConnection(), obj));
+                out.flush();
             }
 
         } while (!response.toString().equalsIgnoreCase("Terminate"));

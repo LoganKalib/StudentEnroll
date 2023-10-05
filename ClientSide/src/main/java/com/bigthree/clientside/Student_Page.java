@@ -2,15 +2,20 @@ package com.bigthree.clientside;
 
 import com.bigthree.objects.Courses;
 import com.bigthree.objects.Enrolled;
+import com.bigthree.objects.NewEnroll;
 import com.bigthree.objects.Student;
 import java.awt.BorderLayout;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import javax.swing.*;
 import javax.swing.border.EmptyBorder;
 import serverConnection.ServerConnection;
 
-public class Student_Page extends JFrame {
+public class Student_Page extends JFrame implements ActionListener{
 
     private final JTabbedPane main;
     private final JPanel left;
@@ -24,12 +29,13 @@ public class Student_Page extends JFrame {
 
     private final Student loggedin;
     private ServerConnection con;
+    private ArrayList<Courses> display;
 
     public Student_Page(Student stud, ServerConnection con) throws IOException, ClassNotFoundException {
 
         this.con = con;
         loggedin = stud;
-        System.out.println(loggedin.toString());
+
         this.setTitle("Student Page");
         this.setLayout(new BorderLayout());
 
@@ -46,6 +52,9 @@ public class Student_Page extends JFrame {
 
         btnRegister = new JButton("Register");
         btnExit = new JButton("Exit");
+        
+        btnRegister.addActionListener(this);
+        btnExit.addActionListener(this);
 
         left.setLayout(new BorderLayout());
         right.setLayout(new BorderLayout());
@@ -68,25 +77,61 @@ public class Student_Page extends JFrame {
         this.setVisible(true);
         this.setSize(500, 350);
         this.setLocationRelativeTo(null);
+        
+        display = con.getCourses();
 
-        ArrayList<Courses> display = con.getCourses();
-        if(display == null){
-            JOptionPane.showMessageDialog(null, "Currently no Courses.");
-        }else{
-            for(var i:display){
+        populateStud();
+
+    }
+
+    public void populateStud() throws IOException, ClassNotFoundException {
+        
+        if (display == null) {
+            dmlCourses.clear();
+            dmlCourses.addElement("No Courses.");
+        } else {
+            dmlCourses.clear();
+            for (var i : display) {
                 dmlCourses.addElement(i.toString());
             }
         }
-        
+
         ArrayList<Enrolled> displayEn = con.getEnrolled();
-        if(displayEn == null){
-            JOptionPane.showMessageDialog(null, "No enrolled Courses.");
-        }else{
-            for(var i:displayEn){
-                dmlEnrolled.addElement(i.toString());
+        if (displayEn == null) {
+            dmlEnrolled.clear();
+            dmlEnrolled.addElement("No enrollments.");
+        } else {
+            dmlEnrolled.clear();
+            for (var i : displayEn) {
+                if (i.getStudNum() == loggedin.getNumber()) {
+                    dmlEnrolled.addElement(i.toString());
+                }
             }
         }
+    }
 
+    @Override
+    public void actionPerformed(ActionEvent e) {
+        if(e.getSource() == btnRegister){
+            NewEnroll obj = new NewEnroll(loggedin,display.get(allCourses.getSelectedIndex()));
+            try {
+                String msg = con.newEnroll(obj);
+                JOptionPane.showMessageDialog(null,msg);
+                if(msg.equalsIgnoreCase("New Enrollment successfully")){
+                    populateStud();
+                }
+            } catch (IOException | ClassNotFoundException ex) {
+                Logger.getLogger(Student_Page.class.getName()).log(Level.SEVERE, null, ex);
+            }
+        }else if(e.getSource() == btnExit){
+            try {
+                con.sendData("Terminate");
+                con.closeAll();
+                this.dispose();
+            } catch (IOException ex) {
+                Logger.getLogger(Login_Page.class.getName()).log(Level.SEVERE, null, ex);
+            }
+        }
     }
 
 }

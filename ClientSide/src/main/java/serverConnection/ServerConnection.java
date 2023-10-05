@@ -3,6 +3,7 @@ package serverConnection;
 import com.bigthree.objects.Admin;
 import com.bigthree.objects.Courses;
 import com.bigthree.objects.Enrolled;
+import com.bigthree.objects.NewEnroll;
 import com.bigthree.objects.Student;
 import java.io.IOException;
 import java.io.ObjectInputStream;
@@ -88,5 +89,12 @@ public final class ServerConnection {
         }catch(Exception ex){
             return null;
         }
+    }
+    
+    public String newEnroll(NewEnroll obj) throws IOException, ClassNotFoundException{
+        out.writeObject(obj);
+        out.flush();
+        return (String) in.readObject();
+       
     }
 }
