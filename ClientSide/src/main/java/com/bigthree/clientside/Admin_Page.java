@@ -7,6 +7,7 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import javax.swing.*;
 import javax.swing.border.EmptyBorder;
+import serverConnection.ServerConnection;
 
 public class Admin_Page extends JFrame implements ActionListener{
 
@@ -17,10 +18,12 @@ public class Admin_Page extends JFrame implements ActionListener{
     private JButton btnRegStud, btnRegCourse, btnExit, btnExitStud;
 
     private Admin loggedin;
+    private ServerConnection con;
     
-    public Admin_Page(Admin admin) {
+    public Admin_Page(Admin admin, ServerConnection con) {
         
         loggedin = admin;
+        this.con = con;
         
         this.setLayout(new BorderLayout());
         this.setTitle("Admin Page");

@@ -4,6 +4,7 @@ import com.bigthree.objects.Student;
 import java.awt.BorderLayout;
 import javax.swing.*;
 import javax.swing.border.EmptyBorder;
+import serverConnection.ServerConnection;
 
 public class Student_Page extends JFrame {
 
@@ -18,9 +19,11 @@ public class Student_Page extends JFrame {
     private final JButton btnExit;
 
     private final Student loggedin;
+    private ServerConnection con;
     
-    public Student_Page(Student stud) {
+    public Student_Page(Student stud, ServerConnection con) {
         
+        this.con = con;
         loggedin = stud;
         System.out.println(loggedin.toString());
         this.setTitle("Student Page");
@@ -36,7 +39,6 @@ public class Student_Page extends JFrame {
         allCourses = new JList(dmlCourses);
         allEnrolled = new JList(dmlEnrolled);
         allEnrolled.setEnabled(false);
-
         
 
         btnRegister = new JButton("Register");
@@ -65,4 +67,5 @@ public class Student_Page extends JFrame {
         this.setLocationRelativeTo(null);
 
     }
+    
 }

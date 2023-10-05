@@ -80,8 +80,7 @@ public class Login_Page extends JFrame implements ActionListener {
                             JOptionPane.showMessageDialog(null, "this user does not Exist.");
                         }else{
                             JOptionPane.showMessageDialog(null, "Welcome " + fromServer.toString());
-                            Student_Page Stud = new Student_Page(fromServer);
-                            con.closeAll();
+                            Student_Page Stud = new Student_Page(fromServer, con);
                             this.dispose();
                         }
                     } catch (IOException | ClassNotFoundException ex) {
@@ -96,7 +95,7 @@ public class Login_Page extends JFrame implements ActionListener {
                         }else{
                             con.closeAll();
                             JOptionPane.showMessageDialog(null, "Welcome " + fromServer.toString());
-                            Admin_Page admin = new Admin_Page(fromServer);
+                            Admin_Page admin = new Admin_Page(fromServer, con);
                             this.dispose();
                         }
                     } catch (IOException | ClassNotFoundException ex) {

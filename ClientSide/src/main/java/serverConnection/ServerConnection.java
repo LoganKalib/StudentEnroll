@@ -70,5 +70,4 @@ public final class ServerConnection {
             return null;
         }
     }
-
 }
