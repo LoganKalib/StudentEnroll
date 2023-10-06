@@ -7,43 +7,46 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 
 public class StudentDAO {
-    
+
     String selectStud, insertStud;
-    
-    public Student selectStudent(Connection c, Student stud) throws SQLException{
+
+    public Student selectStudent(Connection c, Student stud) throws SQLException {
         selectStud = "SELECT * FROM STUDENT WHERE StudentNumber=? AND Password=?";
         PreparedStatement ps = c.prepareStatement(selectStud);
         ps.setInt(1, stud.getNumber());
         ps.setString(2, stud.getPassword());
-        
+
         ResultSet rs = ps.executeQuery();
-        
-        while(rs.next()){
-            Student studLogin = new Student(rs.getString("Name"), rs.getString("Surname"),rs.getString("Password"),rs.getInt("StudentNumber"));
+
+        while (rs.next()) {
+            Student studLogin = new Student(rs.getString("Name"), rs.getString("Surname"), rs.getString("Password"), rs.getInt("StudentNumber"));
             return studLogin;
-        }    
+        }
         return null;
     }
-    
-    public String createStudent(Connection c, Student stud) throws SQLException{
-        insertStud = "INSERT INTO STUDENT values(?,?,?,?)";
-        PreparedStatement ps = c.prepareStatement(insertStud);
-        ps.setString(1, stud.getName());
-        ps.setString(2, stud.getSurname());
-        ps.setInt(3, stud.getNumber());
-        ps.setString(4, stud.getPassword());
-        
-        if(selectStudent(c,stud) == null){
+
+    public String createStudent(Connection c, Student stud) throws SQLException {
+        selectStud = "SELECT * FROM STUDENT WHERE StudentNumber=?";
+        PreparedStatement ps1 = c.prepareStatement(selectStud);
+        ps1.setInt(1, stud.getNumber());
+        ResultSet rs = ps1.executeQuery();
+        if (rs.next()) {
+            return "This User Already Exist!";
+        } else {
+            insertStud = "INSERT INTO STUDENT values(?,?,?,?)";
+            PreparedStatement ps = c.prepareStatement(insertStud);
+            ps.setString(1, stud.getName());
+            ps.setString(2, stud.getSurname());
+            ps.setInt(3, stud.getNumber());
+            ps.setString(4, stud.getPassword());
+
             int rows = ps.executeUpdate();
-            if(rows==0){
+            if (rows == 0) {
                 return "Unable to add Student...";
-            }else{
+            } else {
                 return "Student added successfully.";
             }
-        }else{
-            return "This User Already Exist!";
+
         }
-        
-        
     }
 }
