@@ -20,6 +20,7 @@ public class StudentDAO {
 
         while (rs.next()) {
             Student studLogin = new Student(rs.getString("Name"), rs.getString("Surname"), rs.getString("Password"), rs.getInt("StudentNumber"));
+            ps.close();
             return studLogin;
         }
         return null;
@@ -31,6 +32,7 @@ public class StudentDAO {
         ps1.setInt(1, stud.getNumber());
         ResultSet rs = ps1.executeQuery();
         if (rs.next()) {
+            ps1.close();
             return "This User Already Exist!";
         } else {
             insertStud = "INSERT INTO STUDENT values(?,?,?,?)";
@@ -42,8 +44,12 @@ public class StudentDAO {
 
             int rows = ps.executeUpdate();
             if (rows == 0) {
+                ps.close();
+                ps1.close();
                 return "Unable to add Student...";
             } else {
+                ps.close();
+                ps1.close();
                 return "Student added successfully.";
             }
 

@@ -120,8 +120,7 @@ public class Admin_Page extends JFrame implements ActionListener {
                 }
             }
 
-        }
-        if (e.getSource() == btnRegCourse) {
+        } else if (e.getSource() == btnRegCourse) {
             if (txtCourseCode.getText().isBlank() || txtCourseName.getText().isBlank() || txtCoursePrice.getText().isBlank()) {
                 JOptionPane.showMessageDialog(null, "Please make sure all values are added");
             } else {
@@ -133,8 +132,7 @@ public class Admin_Page extends JFrame implements ActionListener {
 
                 }
             }
-        }
-        if(e.getSource() == btnExit || e.getSource() == btnExitStud){
+        } else if (e.getSource() == btnExit || e.getSource() == btnExitStud) {
             try {
                 con.sendData("Terminate");
                 con.closeAll();

@@ -23,8 +23,11 @@ public class CoursesDAO {
         }
 
         if (reArr.isEmpty()) {
+            ps.close();
             return null;
         } else {
+
+            ps.close();
             return reArr;
         }
 
@@ -37,6 +40,7 @@ public class CoursesDAO {
 
         ResultSet rs = ps1.executeQuery();
         if (rs.next()) {
+            ps1.close();
             return "Course Code already Exists";
         } else {
             newCourse = "INSERT INTO COURSES VALUES(?,?,?)";
@@ -47,8 +51,12 @@ public class CoursesDAO {
 
             int rows = ps.executeUpdate();
             if (rows > 0) {
+                ps1.close();
+                ps.close();
                 return "Record added successfully.";
             } else {
+                ps1.close();
+                ps.close();
                 return "Unable to add record.";
             }
         }

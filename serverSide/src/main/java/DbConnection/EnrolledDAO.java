@@ -28,8 +28,10 @@ public class EnrolledDAO {
         }
 
         if (reArr.isEmpty()) {
+            ps.close();
             return null;
         } else {
+            ps.close();
             return reArr;
         }
 
@@ -52,11 +54,16 @@ public class EnrolledDAO {
             int row = ps.executeUpdate();
 
             if (row > 0) {
+                ps1.close();
+                ps.close();
                 return "Record added Successfully.";
             } else {
+                ps1.close();
+                ps.close();
                 return "Unable to add record";
             }
         } else {
+            ps1.close();
             return "Unable to add record";
         }
     }

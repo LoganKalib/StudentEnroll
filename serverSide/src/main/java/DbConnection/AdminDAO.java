@@ -20,8 +20,10 @@ public class AdminDAO {
         
         while(rs.next()){
             Admin adUser = new Admin(rs.getString("Name"), rs.getString("Surname"), rs.getString("Password"), rs.getString("Username"));
+            ps.close();
             return adUser;
         }
+        ps.close();
         return null;
     }
 }
