@@ -93,7 +93,6 @@ public class Login_Page extends JFrame implements ActionListener {
                         if(fromServer == null){
                             JOptionPane.showMessageDialog(null, "this user does not Exist.");
                         }else{
-                            con.closeAll();
                             JOptionPane.showMessageDialog(null, "Welcome " + fromServer.toString());
                             Admin_Page admin = new Admin_Page(fromServer, con);
                             this.dispose();

@@ -16,8 +16,7 @@ public final class ServerConnection {
     private final Socket server;
     private ObjectOutputStream out;
     private ObjectInputStream in;
-    private Object response;
-
+    
     public ServerConnection() throws IOException, ClassNotFoundException {
         server = new Socket("127.0.0.1", 12345);
         getStreams();
@@ -97,4 +96,17 @@ public final class ServerConnection {
         return (String) in.readObject();
        
     }
+    
+    public String newStudent(Student obj) throws IOException, ClassNotFoundException{
+        out.writeObject(obj);
+        out.flush();
+        return (String) in.readObject();
+    }
+    
+    public String newCourse(Courses obj) throws IOException, ClassNotFoundException{
+        out.writeObject(obj);
+        out.flush();
+        return (String) in.readObject();
+    }
 }
+
