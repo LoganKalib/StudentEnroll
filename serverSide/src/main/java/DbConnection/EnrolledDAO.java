@@ -44,14 +44,15 @@ public class EnrolledDAO {
         selectStudRecords = "SELECT * FROM ENROLLED WHERE Enroll_StudNum=? AND Enroll_Code =?";
 
         PreparedStatement ps1 = c.prepareStatement(selectStudRecords);
+        ps.setInt(1, obj.getStud().getNumber());
+        ps.setString(2, obj.getCourse().getCode());
 
-        int rows = ps1.executeUpdate();
+        ResultSet row = ps.executeQuery();
 
-        if (rows > 0) {
+        if (row.getRow() == 0) {
             return "Unable to add";
         } else {
-            int row = ps.executeUpdate();
-
+            int rows = ps1.executeUpdate();
             if (rows == 0) {
                 return "Unable to add";
             } else {
