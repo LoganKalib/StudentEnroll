@@ -36,29 +36,28 @@ public class EnrolledDAO {
     }
 
     public String createNew(Connection c, NewEnroll obj) throws SQLException {
-        newEnroll = "INSERT INTO ENROLLED VALUES(?,?)";
-        PreparedStatement ps = c.prepareStatement(newEnroll);
-        ps.setInt(1, obj.getStud().getNumber());
-        ps.setString(2, obj.getCourse().getCode());
 
         selectStudRecords = "SELECT * FROM ENROLLED WHERE Enroll_StudNum=? AND Enroll_Code =?";
-
         PreparedStatement ps1 = c.prepareStatement(selectStudRecords);
-        ps.setInt(1, obj.getStud().getNumber());
-        ps.setString(2, obj.getCourse().getCode());
+        ps1.setInt(1, obj.getStud().getNumber());
+        ps1.setString(2, obj.getCourse().getCode());
 
-        ResultSet row = ps.executeQuery();
+        ResultSet rs = ps1.executeQuery();
 
-        if (row.getRow() == 0) {
-            return "Unable to add";
-        } else {
-            int rows = ps1.executeUpdate();
-            if (rows == 0) {
-                return "Unable to add";
+        if (!rs.next()) {
+            newEnroll = "INSERT INTO ENROLLED VALUES(?,?)";
+            PreparedStatement ps = c.prepareStatement(newEnroll);
+            ps.setInt(1, obj.getStud().getNumber());
+            ps.setString(2, obj.getCourse().getCode());
+            int row = ps.executeUpdate();
+
+            if (row > 0) {
+                return "Record added Successfully.";
             } else {
-                return "New Enrollment successfully";
+                return "Unable to add record";
             }
+        } else {
+            return "Unable to add record";
         }
-
     }
 }
