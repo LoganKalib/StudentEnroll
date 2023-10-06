@@ -117,7 +117,7 @@ public class Student_Page extends JFrame implements ActionListener{
             try {
                 String msg = con.newEnroll(obj);
                 JOptionPane.showMessageDialog(null,msg);
-                if(msg.equalsIgnoreCase("New Enrollment successfully")){
+                if(msg.equalsIgnoreCase("Record added Successfully.")){
                     populateStud();
                 }
             } catch (IOException | ClassNotFoundException ex) {
