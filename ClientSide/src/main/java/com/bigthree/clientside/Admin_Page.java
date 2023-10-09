@@ -98,6 +98,7 @@ public class Admin_Page extends JFrame implements ActionListener {
         btnRegStud.addActionListener(this);
         btnRegCourse.addActionListener(this);
         btnExit.addActionListener(this);
+        btnExitStud.addActionListener(this);
 
     }
 
@@ -127,6 +128,10 @@ public class Admin_Page extends JFrame implements ActionListener {
                 try {
                     int num = Integer.parseInt(txtCoursePrice.getText());
                     Courses co = new Courses(txtCourseCode.getText(), txtCourseName.getText(), num);
+                    JOptionPane.showMessageDialog(null, con.newCourse(co));
+                    txtCourseCode.setText("");
+                    txtCourseName.setText("");
+                    txtCoursePrice.setText("");
                 } catch (Exception ex) {
                     JOptionPane.showMessageDialog(null, "Not a valid Price");
 
