@@ -171,6 +171,7 @@ public class Admin_Page extends JFrame implements ActionListener {
             int i = lstStuds.getSelectedIndex();
             try {
                 JOptionPane.showMessageDialog(null, con.deleteStud(studList.get(i)));
+                populateStuds();
             } catch (IOException | ClassNotFoundException ex) {
                 Logger.getLogger(Admin_Page.class.getName()).log(Level.SEVERE, null, ex);
             } 
