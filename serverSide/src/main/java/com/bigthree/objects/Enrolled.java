@@ -5,6 +5,7 @@ import java.io.Serializable;
 public class Enrolled implements Serializable{
     private int StudNum;
     private String code;
+    private boolean delete = false;
 
     public int getStudNum() {
         return StudNum;
@@ -13,6 +14,15 @@ public class Enrolled implements Serializable{
     public String getCode() {
         return code;
     }
+
+    public boolean isDelete() {
+        return delete;
+    }
+
+    public void setDelete(boolean delete) {
+        this.delete = delete;
+    }
+    
 
     public void setStudNum(int StudNum) {
         this.StudNum = StudNum;

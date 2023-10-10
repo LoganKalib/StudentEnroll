@@ -12,7 +12,7 @@ import java.util.ArrayList;
 
 public class EnrolledDAO {
 
-    private String selectStudRecords, newEnroll;
+    private String selectStudRecords, newEnroll, deleteRecord;
 
     public ArrayList<Enrolled> getStudRecords(Connection c) throws SQLException {
         selectStudRecords = "SELECT * FROM ENROLLED";
@@ -66,5 +66,20 @@ public class EnrolledDAO {
             ps1.close();
             return "Unable to add record";
         }
+    }
+    
+    public String deleteRec(Connection c, Enrolled obj) throws SQLException{
+        deleteRecord = "DELETE FROM ENROLLED WHERE Enroll_StudNum=? AND Enroll_Code=?";
+        PreparedStatement ps = c.prepareStatement(deleteRecord);
+        
+        int rows = ps.executeUpdate();
+        ps.close();
+        
+        if(rows<0){
+            return "Record delete";
+        }else{
+            return "unable to delete";
+        }
+        
     }
 }

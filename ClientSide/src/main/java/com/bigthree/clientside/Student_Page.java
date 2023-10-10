@@ -15,7 +15,7 @@ import javax.swing.*;
 import javax.swing.border.EmptyBorder;
 import serverConnection.ServerConnection;
 
-public class Student_Page extends JFrame implements ActionListener{
+public class Student_Page extends JFrame implements ActionListener {
 
     private final JTabbedPane main;
     private final JPanel left;
@@ -54,7 +54,7 @@ public class Student_Page extends JFrame implements ActionListener{
         btnRegister = new JButton("Register");
         btnExit = new JButton("Exit");
         btnDelete = new JButton("Delete");
-        
+
         btnRegister.addActionListener(this);
         btnExit.addActionListener(this);
         btnDelete.addActionListener(this);
@@ -81,7 +81,7 @@ public class Student_Page extends JFrame implements ActionListener{
         this.setVisible(true);
         this.setSize(500, 350);
         this.setLocationRelativeTo(null);
-        
+
         display = con.getCourses();
 
         populateStud();
@@ -89,11 +89,11 @@ public class Student_Page extends JFrame implements ActionListener{
     }
 
     public void populateStud() throws IOException, ClassNotFoundException {
-        
+
         if (display == null) {
             dmlCourses.clear();
             dmlCourses.addElement("No Courses.");
-            
+
         } else {
             dmlCourses.clear();
             for (var i : display) {
@@ -118,24 +118,32 @@ public class Student_Page extends JFrame implements ActionListener{
 
     @Override
     public void actionPerformed(ActionEvent e) {
-        if(e.getSource() == btnRegister){
-            NewEnroll obj = new NewEnroll(loggedin,display.get(allCourses.getSelectedIndex()));
+        if (e.getSource() == btnRegister) {
+            NewEnroll obj = new NewEnroll(loggedin, display.get(allCourses.getSelectedIndex()));
             try {
                 String msg = con.newEnroll(obj);
-                JOptionPane.showMessageDialog(null,msg);
-                if(msg.equalsIgnoreCase("Record added Successfully.")){
+                JOptionPane.showMessageDialog(null, msg);
+                if (msg.equalsIgnoreCase("Record added Successfully.")) {
                     populateStud();
                 }
             } catch (IOException | ClassNotFoundException ex) {
                 Logger.getLogger(Student_Page.class.getName()).log(Level.SEVERE, null, ex);
             }
-        }else if(e.getSource() == btnExit){
+        } else if (e.getSource() == btnExit) {
             try {
                 con.sendData("Terminate");
                 con.closeAll();
                 this.dispose();
             } catch (IOException ex) {
                 Logger.getLogger(Login_Page.class.getName()).log(Level.SEVERE, null, ex);
+            }
+        } else if (e.getSource() == btnDelete) {
+            int i = allEnrolled.getSelectedIndex();
+            try {
+                JOptionPane.showMessageDialog(null, con.deleteEnroll(displayEn.get(i)));
+                populateStud();
+            } catch (IOException | ClassNotFoundException ex) {
+                Logger.getLogger(Student_Page.class.getName()).log(Level.SEVERE, null, ex);
             }
         }
     }

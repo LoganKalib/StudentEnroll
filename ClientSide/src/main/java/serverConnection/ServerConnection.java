@@ -116,5 +116,12 @@ public final class ServerConnection {
         out.flush();
         return (String) in.readObject();
     }
+    
+    public String deleteEnroll(Enrolled obj) throws IOException, ClassNotFoundException{
+        obj.setDelete(true);
+        out.writeObject(obj);
+        out.flush();
+        return (String) in.readObject();
+    }
 }
 

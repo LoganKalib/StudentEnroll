@@ -7,6 +7,7 @@ import DbConnection.EnrolledDAO;
 import DbConnection.StudentDAO;
 import com.bigthree.objects.Admin;
 import com.bigthree.objects.Courses;
+import com.bigthree.objects.Enrolled;
 import com.bigthree.objects.NewEnroll;
 import com.bigthree.objects.Student;
 import java.io.IOException;
@@ -88,6 +89,12 @@ public class ClientConnect {
                 NewEnroll obj = (NewEnroll) response;
                 out.writeObject(enrolledDAO.createNew(db.getConnection(), obj));
                 out.flush();
+            } else if(response instanceof Enrolled){
+                Enrolled obj = (Enrolled) response;
+                if(obj.isDelete()){
+                    out.writeObject(enrolledDAO.deleteRec(db.getConnection(), obj));
+                    out.flush();
+                }
             }
 
         } while (!response.toString().equalsIgnoreCase("Terminate"));
