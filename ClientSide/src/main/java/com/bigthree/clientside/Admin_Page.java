@@ -27,6 +27,7 @@ public class Admin_Page extends JFrame implements ActionListener {
 
     private Admin loggedin;
     private ServerConnection con;
+    ArrayList<Student> studList;
 
     public Admin_Page(Admin admin, ServerConnection con) {
 
@@ -166,11 +167,18 @@ public class Admin_Page extends JFrame implements ActionListener {
             } catch (IOException ex) {
                 Logger.getLogger(Login_Page.class.getName()).log(Level.SEVERE, null, ex);
             }
+        } else if(e.getSource() == btnDelete){
+            int i = lstStuds.getSelectedIndex();
+            try {
+                JOptionPane.showMessageDialog(null, con.deleteStud(studList.get(i)));
+            } catch (IOException | ClassNotFoundException ex) {
+                Logger.getLogger(Admin_Page.class.getName()).log(Level.SEVERE, null, ex);
+            } 
         }
     }
     
     public void populateStuds() throws IOException, ClassNotFoundException{
-        ArrayList<Student> studList = con.listStuds("allStudents");
+        studList = con.listStuds("allStudents");
         dmlStud = new DefaultListModel();
         for(var i: studList){
             dmlStud.addElement(i);

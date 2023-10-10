@@ -56,6 +56,9 @@ public class ClientConnect {
                 if (stud.getName() == null && stud.getSurname() == null) {
                     out.writeObject(studDAO.selectStudent(db.getConnection(), stud));
                     out.flush();
+                } else if (stud.isDelete()) {
+                    out.writeObject(studDAO.deleteStudent(db.getConnection(), stud));
+                    out.flush();
                 } else {
                     out.writeObject(studDAO.createStudent(db.getConnection(), stud));
                     out.flush();

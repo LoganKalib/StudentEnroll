@@ -109,5 +109,12 @@ public final class ServerConnection {
         out.flush();
         return (ArrayList<Student>) in.readObject();
     }
+    
+    public String deleteStud(Student stud) throws IOException, ClassNotFoundException{
+        stud.setDelete(true);
+        out.writeObject(stud);
+        out.flush();
+        return (String) in.readObject();
+    }
 }
 

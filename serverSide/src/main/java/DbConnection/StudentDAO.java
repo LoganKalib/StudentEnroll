@@ -9,7 +9,7 @@ import java.util.ArrayList;
 
 public class StudentDAO {
 
-    String selectStud, insertStud;
+    String selectStud, insertStud, deleteStud;
 
     public Student selectStudent(Connection c, Student stud) throws SQLException {
         selectStud = "SELECT * FROM STUDENT WHERE StudentNumber=? AND Password=?";
@@ -39,6 +39,20 @@ public class StudentDAO {
         ps.close();
         rs.close();
         return arr;
+    }
+    
+    public String deleteStudent(Connection c, Student stud) throws SQLException{
+        deleteStud = "DELETE FROM STUDENT WHERE StudentNumber=?";
+        PreparedStatement ps = c.prepareStatement(deleteStud);
+        ps.setInt(1, stud.getNumber());
+        
+        int result = ps.executeUpdate();
+        
+        if(result>0){
+            return "Student deleted.";
+        }else{
+            return "Unable to delete.";
+        }
     }
 
     public String createStudent(Connection c, Student stud) throws SQLException {
