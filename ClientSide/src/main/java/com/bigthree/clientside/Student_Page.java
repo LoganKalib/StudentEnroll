@@ -5,6 +5,7 @@ import com.bigthree.objects.Enrolled;
 import com.bigthree.objects.NewEnroll;
 import com.bigthree.objects.Student;
 import java.awt.BorderLayout;
+import java.awt.GridLayout;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.io.IOException;
@@ -20,6 +21,7 @@ public class Student_Page extends JFrame implements ActionListener {
     private final JTabbedPane main;
     private final JPanel left;
     private final JPanel right;
+    private final JPanel buttons;
     private final JList allCourses;
     private final JList allEnrolled;
     private final DefaultListModel dmlCourses;
@@ -44,6 +46,9 @@ public class Student_Page extends JFrame implements ActionListener {
         main = new JTabbedPane();
         left = new JPanel();
         right = new JPanel();
+        buttons = new JPanel();
+        buttons.setLayout(new GridLayout(1,2));
+        
 
         dmlCourses = new DefaultListModel();
         dmlEnrolled = new DefaultListModel();
@@ -66,8 +71,9 @@ public class Student_Page extends JFrame implements ActionListener {
         left.add(btnRegister, BorderLayout.SOUTH);
 
         right.add(allEnrolled, BorderLayout.CENTER);
-        right.add(btnDelete, BorderLayout.SOUTH);
-        right.add(btnExit, BorderLayout.SOUTH);
+        buttons.add(btnDelete);
+        buttons.add(btnExit);
+        right.add(buttons, BorderLayout.SOUTH);
 
         main.add("All Courses", left);
         main.add("Enrolled Courses", right);

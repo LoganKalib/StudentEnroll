@@ -71,6 +71,8 @@ public class EnrolledDAO {
     public String deleteRec(Connection c, Enrolled obj) throws SQLException{
         deleteRecord = "DELETE FROM ENROLLED WHERE Enroll_StudNum=? AND Enroll_Code=?";
         PreparedStatement ps = c.prepareStatement(deleteRecord);
+        ps.setInt(1, obj.getStudNum());
+        ps.setString(2, obj.getCode());
         
         int rows = ps.executeUpdate();
         ps.close();
