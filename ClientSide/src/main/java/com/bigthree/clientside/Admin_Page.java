@@ -8,6 +8,7 @@ import java.awt.GridLayout;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.io.IOException;
+import java.util.ArrayList;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.swing.*;
@@ -17,10 +18,12 @@ import serverConnection.ServerConnection;
 public class Admin_Page extends JFrame implements ActionListener {
 
     private JTabbedPane options;
-    private JPanel pnlStud, pnlCourse;
+    private JPanel pnlStud, pnlCourse, pnlDeleteStud;
     private JLabel lblStudName, lblStudSurname, lblStudNumber, lblStudPassword, lblCourseCode, lblCourseName, lblCoursePrice;
     private JTextField txtStudName, txtStudSurname, txtStudNumber, txtStudPassword, txtCourseCode, txtCourseName, txtCoursePrice;
-    private JButton btnRegStud, btnRegCourse, btnExit, btnExitStud;
+    private JButton btnRegStud, btnRegCourse, btnExit, btnExitStud, btnDelete;
+    private JList lstStuds;
+    private DefaultListModel dmlStud;
 
     private Admin loggedin;
     private ServerConnection con;
@@ -36,6 +39,15 @@ public class Admin_Page extends JFrame implements ActionListener {
         options = new JTabbedPane();
         pnlStud = new JPanel();
         pnlCourse = new JPanel();
+        pnlDeleteStud = new JPanel();
+        
+        lstStuds = new JList();
+        
+        try {
+            populateStuds();
+        } catch (IOException | ClassNotFoundException ex) {
+            Logger.getLogger(Admin_Page.class.getName()).log(Level.SEVERE, null, ex);
+        }
 
         lblStudName = new JLabel("Name: ");
         lblStudSurname = new JLabel("Surname: ");
@@ -55,18 +67,23 @@ public class Admin_Page extends JFrame implements ActionListener {
 
         btnRegStud = new JButton("Register student");
         btnRegCourse = new JButton("Register Course");
+        btnDelete = new JButton("Delete Student");
         btnExit = new JButton("Exit");
         btnExitStud = new JButton("Exit");
 
         options.add("Create Student", pnlStud);
         options.add("Create Course", pnlCourse);
+        options.add("Delete Student", pnlDeleteStud);
 
         pnlStud.setLayout(new GridLayout(5, 2));
 
         pnlCourse.setLayout(new GridLayout(4, 2));
+        
+        pnlDeleteStud.setLayout(new BorderLayout());
 
         pnlStud.setBorder(new EmptyBorder(20, 20, 20, 20));
         pnlCourse.setBorder(new EmptyBorder(20, 20, 20, 20));
+        pnlDeleteStud.setBorder(new EmptyBorder(20, 20, 20, 20));
         options.setBorder(new EmptyBorder(30, 30, 30, 30));
 
         pnlStud.add(lblStudName);
@@ -88,6 +105,9 @@ public class Admin_Page extends JFrame implements ActionListener {
         pnlCourse.add(txtCoursePrice);
         pnlCourse.add(btnRegCourse);
         pnlCourse.add(btnExit);
+        
+        pnlDeleteStud.add(lstStuds, BorderLayout.CENTER);
+        pnlDeleteStud.add(btnDelete, BorderLayout.SOUTH);
 
         this.add(options, BorderLayout.CENTER);
         this.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
@@ -99,6 +119,7 @@ public class Admin_Page extends JFrame implements ActionListener {
         btnRegCourse.addActionListener(this);
         btnExit.addActionListener(this);
         btnExitStud.addActionListener(this);
+        btnDelete.addActionListener(this);
 
     }
 
@@ -146,5 +167,14 @@ public class Admin_Page extends JFrame implements ActionListener {
                 Logger.getLogger(Login_Page.class.getName()).log(Level.SEVERE, null, ex);
             }
         }
+    }
+    
+    public void populateStuds() throws IOException, ClassNotFoundException{
+        ArrayList<Student> studList = con.listStuds("allStudents");
+        dmlStud = new DefaultListModel();
+        for(var i: studList){
+            dmlStud.addElement(i);
+        }
+        lstStuds.setModel(dmlStud);
     }
 }

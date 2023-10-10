@@ -5,6 +5,7 @@ import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.util.ArrayList;
 
 public class StudentDAO {
 
@@ -24,6 +25,20 @@ public class StudentDAO {
             return studLogin;
         }
         return null;
+    }
+    public ArrayList<Student> selectStudents(Connection c) throws SQLException {
+        selectStud = "SELECT * FROM STUDENT";
+        PreparedStatement ps = c.prepareStatement(selectStud);
+        ArrayList<Student> arr = new ArrayList();
+        ResultSet rs = ps.executeQuery();
+
+        while (rs.next()) {
+            Student studLogin = new Student(rs.getString("Name"), rs.getString("Surname"), rs.getString("Password"), rs.getInt("StudentNumber"));
+            arr.add(studLogin);
+        }
+        ps.close();
+        rs.close();
+        return arr;
     }
 
     public String createStudent(Connection c, Student stud) throws SQLException {

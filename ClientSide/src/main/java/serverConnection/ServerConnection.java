@@ -33,11 +33,6 @@ public final class ServerConnection {
         out.flush();
     }
 
-    public void sendData(Student myMsg) throws IOException {
-        out.writeObject(myMsg);
-        out.flush();
-    }
-
     public void closeAll() throws IOException {
         server.close();
         in.close();
@@ -107,6 +102,12 @@ public final class ServerConnection {
         out.writeObject(obj);
         out.flush();
         return (String) in.readObject();
+    }
+    
+    public ArrayList<Student> listStuds(String fetch) throws IOException, ClassNotFoundException{
+        out.writeObject(fetch);
+        out.flush();
+        return (ArrayList<Student>) in.readObject();
     }
 }
 

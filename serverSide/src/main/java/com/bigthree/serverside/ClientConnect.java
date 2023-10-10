@@ -77,8 +77,11 @@ public class ClientConnect {
                 } else if (command.equalsIgnoreCase("getEnrolled")) {
                     out.writeObject(enrolledDAO.getStudRecords(db.getConnection()));
                     out.flush();
+                } else if (command.equalsIgnoreCase("allStudents")) {
+                    out.writeObject(studDAO.selectStudents(db.getConnection()));
+                    out.flush();
                 }
-            } else if(response instanceof NewEnroll){
+            } else if (response instanceof NewEnroll) {
                 NewEnroll obj = (NewEnroll) response;
                 out.writeObject(enrolledDAO.createNew(db.getConnection(), obj));
                 out.flush();
