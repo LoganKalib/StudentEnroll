@@ -77,7 +77,7 @@ public class EnrolledDAO {
         int rows = ps.executeUpdate();
         ps.close();
         
-        if(rows<0){
+        if(rows>0){
             return "Record delete";
         }else{
             return "unable to delete";
