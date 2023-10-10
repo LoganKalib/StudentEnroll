@@ -54,6 +54,6 @@ public class Student implements Serializable{
     
     @Override
     public String toString(){
-        return this.name + " " + this.getSurname() + "!";
+        return this.name + " " + this.getSurname();
     }
 }
