@@ -26,10 +26,12 @@ public class Student_Page extends JFrame implements ActionListener{
     private final DefaultListModel dmlEnrolled;
     private final JButton btnRegister;
     private final JButton btnExit;
+    private final JButton btnDelete;
 
     private final Student loggedin;
     private ServerConnection con;
     private ArrayList<Courses> display;
+    private ArrayList<Enrolled> displayEn;
 
     public Student_Page(Student stud, ServerConnection con) throws IOException, ClassNotFoundException {
 
@@ -48,13 +50,14 @@ public class Student_Page extends JFrame implements ActionListener{
 
         allCourses = new JList(dmlCourses);
         allEnrolled = new JList(dmlEnrolled);
-        allEnrolled.setEnabled(false);
 
         btnRegister = new JButton("Register");
         btnExit = new JButton("Exit");
+        btnDelete = new JButton("Delete");
         
         btnRegister.addActionListener(this);
         btnExit.addActionListener(this);
+        btnDelete.addActionListener(this);
 
         left.setLayout(new BorderLayout());
         right.setLayout(new BorderLayout());
@@ -63,6 +66,7 @@ public class Student_Page extends JFrame implements ActionListener{
         left.add(btnRegister, BorderLayout.SOUTH);
 
         right.add(allEnrolled, BorderLayout.CENTER);
+        right.add(btnDelete, BorderLayout.SOUTH);
         right.add(btnExit, BorderLayout.SOUTH);
 
         main.add("All Courses", left);
@@ -89,6 +93,7 @@ public class Student_Page extends JFrame implements ActionListener{
         if (display == null) {
             dmlCourses.clear();
             dmlCourses.addElement("No Courses.");
+            
         } else {
             dmlCourses.clear();
             for (var i : display) {
@@ -96,10 +101,11 @@ public class Student_Page extends JFrame implements ActionListener{
             }
         }
 
-        ArrayList<Enrolled> displayEn = con.getEnrolled();
+        displayEn = con.getEnrolled();
         if (displayEn == null) {
             dmlEnrolled.clear();
             dmlEnrolled.addElement("No enrollments.");
+            allEnrolled.setEnabled(false);
         } else {
             dmlEnrolled.clear();
             for (var i : displayEn) {
