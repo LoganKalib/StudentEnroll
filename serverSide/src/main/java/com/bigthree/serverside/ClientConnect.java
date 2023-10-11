@@ -29,18 +29,21 @@ public class ClientConnect {
     private CoursesDAO coursesDAO = new CoursesDAO();
     private EnrolledDAO enrolledDAO = new EnrolledDAO();
     DbConnect db = DbConnect.getInstance();
-
+    
+    // Call the required methods in the constructor
     public ClientConnect() throws IOException, ClassNotFoundException, SQLException {
         listenForClients();
         getStreams();
         communicate();
     }
-
+    
+    // Create a server socket with the port number and max queued connections as the parameter
     private void listenForClients() throws IOException {
         server = new ServerSocket(12345, 1);
         client = server.accept();
     }
-
+    
+    // Create input and out streams for communication
     private void getStreams() throws IOException {
         out = new ObjectOutputStream(client.getOutputStream());
         out.flush();
@@ -49,59 +52,83 @@ public class ClientConnect {
 
     public void communicate() throws IOException, ClassNotFoundException, SQLException {
         do {
+            // String object that stores information sent from the client
             response = in.readObject();
             System.out.println(response.toString());
 
             if (response instanceof Student) {
                 Student stud = (Student) response;
+                // Sign user in as a student
                 if (stud.getName() == null && stud.getSurname() == null) {
                     out.writeObject(studDAO.selectStudent(db.getConnection(), stud));
                     out.flush();
-                } else if (stud.isDelete()) {
+                } 
+                // Delete an existing student
+                else if (stud.isDelete()) {
                     out.writeObject(studDAO.deleteStudent(db.getConnection(), stud));
                     out.flush();
-                } else {
+                } 
+                // Create a new student
+                else {
                     out.writeObject(studDAO.createStudent(db.getConnection(), stud));
                     out.flush();
                 }
-            } else if (response instanceof Admin) {
+            } 
+            // Sign the user in as an admin
+            else if (response instanceof Admin) {
                 Admin admin = (Admin) response;
                 out.writeObject(adminDAO.selectAdmin(db.getConnection(), admin));
                 out.flush();
-            } else if (response instanceof Courses) {
+            } 
+            // Checks if the course already exists before creating a new course
+            // Allows the admin to create a new course
+            else if (response instanceof Courses) {
                 Courses course = (Courses) response;
                 out.writeObject(coursesDAO.newCourse(db.getConnection(), course));
                 out.flush();
-
+                
+            // if the received type is of type string, the client is making a fetch request  
             } else if (response instanceof String) {
                 String command = (String) response;
+                // The server will return an array list of all existing courses of type courses
                 if (command.equalsIgnoreCase("getCourses")) {
                     out.writeObject(coursesDAO.getCourses(db.getConnection()));
                     out.flush();
-                } else if (command.equalsIgnoreCase("getEnrolled")) {
+                } 
+                /* Recieves a string from th client and then the server will 
+                return an array list of all existing enrollments of type enroll */
+                else if (command.equalsIgnoreCase("getEnrolled")) {
                     out.writeObject(enrolledDAO.getStudRecords(db.getConnection()));
                     out.flush();
-                } else if (command.equalsIgnoreCase("allStudents")) {
+                } 
+                // Receives string from client and returns an array list of all students
+                else if (command.equalsIgnoreCase("allStudents")) {
                     out.writeObject(studDAO.selectStudents(db.getConnection()));
                     out.flush();
                 }
-            } else if (response instanceof NewEnroll) {
+            } 
+            // Student chooses a course to enroll in
+            // Program checks if the course exists and outputs an appropriate message
+            else if (response instanceof NewEnroll) {
                 NewEnroll obj = (NewEnroll) response;
                 out.writeObject(enrolledDAO.createNew(db.getConnection(), obj));
                 out.flush();
-            } else if(response instanceof Enrolled){
+            } 
+            // if delete is true then it will delete the student enrolled course
+            else if(response instanceof Enrolled){
                 Enrolled obj = (Enrolled) response;
                 if(obj.isDelete()){
                     out.writeObject(enrolledDAO.deleteRec(db.getConnection(), obj));
                     out.flush();
                 }
             }
-
+        // Once the server receives the string "Terminate" from the client, it will close the application
         } while (!response.toString().equalsIgnoreCase("Terminate"));
         db.closeAll();
         closeAll();
     }
-
+    
+    // closeAll() method is called to close all connections
     public void closeAll() throws IOException {
         server.close();
         in.close();
