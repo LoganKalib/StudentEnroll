@@ -178,6 +178,7 @@ public class Admin_Page extends JFrame implements ActionListener {
         }
     }
     
+//A: populates list of students 
     public void populateStuds() throws IOException, ClassNotFoundException{
         studList = con.listStuds("allStudents");
         dmlStud = new DefaultListModel();

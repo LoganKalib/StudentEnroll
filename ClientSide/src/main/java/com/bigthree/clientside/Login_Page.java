@@ -18,6 +18,8 @@ public class Login_Page extends JFrame implements ActionListener {
     private JLabel lblName, lblPass;
     private JTextField txtUsername, txtPassword;
     private JButton btnLogin, btnExit;
+    
+//A: initial server connection check serverConnection    
     private ServerConnection con = new ServerConnection();
 
     public Login_Page() throws IOException, ClassNotFoundException {
@@ -58,8 +60,12 @@ public class Login_Page extends JFrame implements ActionListener {
         this.setLocationRelativeTo(null);
     }
 
+    
+//A: action performed    
     @Override
     public void actionPerformed(ActionEvent e) {
+        
+//A: checks if credentials are null else create boolean x to parse value and check if integer or string , if int = stud if str = admin
         if (e.getSource() == btnLogin) {
             if (txtUsername.getText().isBlank() || txtPassword.getText().isBlank()) {
                 JOptionPane.showMessageDialog(null, "Please make sure that your login details are entered");
@@ -72,7 +78,9 @@ public class Login_Page extends JFrame implements ActionListener {
                     x = false;
                 }
 
+//A: if x = T creates student obj and gets text from values entered sends obj server which verifies, if null etc
                 if (x) {
+                    
                     Student login = new Student(txtPassword.getText(), Integer.parseInt(txtUsername.getText()));
                     try {
                         Student fromServer = con.getStudLogin(login);
@@ -86,6 +94,8 @@ public class Login_Page extends JFrame implements ActionListener {
                     } catch (IOException | ClassNotFoundException ex) {
                         Logger.getLogger(Login_Page.class.getName()).log(Level.SEVERE, null, ex);
                     }
+                    
+//A: else if x = F creates admin obj get text sends to server for verification and return if user exists
                 } else {
                     Admin login = new Admin(txtPassword.getText(), txtUsername.getText());
                     try {
@@ -103,6 +113,8 @@ public class Login_Page extends JFrame implements ActionListener {
                 }
 
             }
+            
+//A: btn exit gets method to terminate program
         } else if(e.getSource() == btnExit){
             try {
                 con.sendData("Terminate");

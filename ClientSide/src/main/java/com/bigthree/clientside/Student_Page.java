@@ -35,6 +35,7 @@ public class Student_Page extends JFrame implements ActionListener {
     private ArrayList<Courses> display;
     private ArrayList<Enrolled> displayEn;
 
+//A: when loaded student object and server connection parsed to student page
     public Student_Page(Student stud, ServerConnection con) throws IOException, ClassNotFoundException {
 
         this.con = con;
@@ -47,8 +48,7 @@ public class Student_Page extends JFrame implements ActionListener {
         left = new JPanel();
         right = new JPanel();
         buttons = new JPanel();
-        buttons.setLayout(new GridLayout(1,2));
-        
+        buttons.setLayout(new GridLayout(1, 2));
 
         dmlCourses = new DefaultListModel();
         dmlEnrolled = new DefaultListModel();
@@ -88,18 +88,21 @@ public class Student_Page extends JFrame implements ActionListener {
         this.setSize(500, 350);
         this.setLocationRelativeTo(null);
 
+//A: defines arraylist of courses
         display = con.getCourses();
 
+//A: method called 
         populateStud();
 
     }
 
+//A: this populates courses list and enrolled list
     public void populateStud() throws IOException, ClassNotFoundException {
-
+//A: if courses are null =
         if (display == null) {
             dmlCourses.clear();
             dmlCourses.addElement("No Courses.");
-
+//A: else displays array list of courses
         } else {
             dmlCourses.clear();
             for (var i : display) {
@@ -108,10 +111,13 @@ public class Student_Page extends JFrame implements ActionListener {
         }
 
         displayEn = con.getEnrolled();
+//A: if courses are null =
         if (displayEn == null) {
             dmlEnrolled.clear();
             dmlEnrolled.addElement("No enrollments.");
             allEnrolled.setEnabled(false);
+
+//A: else displays array list of courses
         } else {
             dmlEnrolled.clear();
             for (var i : displayEn) {
@@ -122,10 +128,12 @@ public class Student_Page extends JFrame implements ActionListener {
         }
     }
 
+//A: newenrolled object is created parse login student, gets arraylist of courses and gets user selected course
     @Override
     public void actionPerformed(ActionEvent e) {
         if (e.getSource() == btnRegister) {
             NewEnroll obj = new NewEnroll(loggedin, display.get(allCourses.getSelectedIndex()));
+            //A: adds newly enrolled course to enrolled table and returns string, repopulates display list
             try {
                 String msg = con.newEnroll(obj);
                 JOptionPane.showMessageDialog(null, msg);
@@ -135,6 +143,8 @@ public class Student_Page extends JFrame implements ActionListener {
             } catch (IOException | ClassNotFoundException ex) {
                 Logger.getLogger(Student_Page.class.getName()).log(Level.SEVERE, null, ex);
             }
+
+//A: exits programs 
         } else if (e.getSource() == btnExit) {
             try {
                 con.sendData("Terminate");
@@ -143,6 +153,8 @@ public class Student_Page extends JFrame implements ActionListener {
             } catch (IOException ex) {
                 Logger.getLogger(Login_Page.class.getName()).log(Level.SEVERE, null, ex);
             }
+
+//A: gets selected errolled course and deletes record and then repopulate
         } else if (e.getSource() == btnDelete) {
             int i = allEnrolled.getSelectedIndex();
             try {
