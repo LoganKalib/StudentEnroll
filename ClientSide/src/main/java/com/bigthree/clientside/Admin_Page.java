@@ -126,6 +126,10 @@ public class Admin_Page extends JFrame implements ActionListener {
 
     @Override
     public void actionPerformed(ActionEvent e) {
+
+//A: checks if the necessary information for a new student is provided
+//A: if any fields are null, an error message is returned
+//A: all information provided, allows Student obj and sends to server for registration.
         if (e.getSource() == btnRegStud) {
             if (txtStudName.getText().isBlank() || txtStudSurname.getText().isBlank() || txtStudNumber.getText().isBlank() || txtStudPassword.getText().isBlank()) {
                 JOptionPane.showMessageDialog(null, "Please make sure all values are added");
@@ -143,7 +147,9 @@ public class Admin_Page extends JFrame implements ActionListener {
                     JOptionPane.showMessageDialog(null, "Not a valid Student ID");
                 }
             }
-
+//A: checks if the necessary information for a new course is provided
+//A: if any fields are null, an error message is returned
+//A: all information provided, allows Courses obj and sends to server for course registration.
         } else if (e.getSource() == btnRegCourse) {
             if (txtCourseCode.getText().isBlank() || txtCourseName.getText().isBlank() || txtCoursePrice.getText().isBlank()) {
                 JOptionPane.showMessageDialog(null, "Please make sure all values are added");
@@ -160,6 +166,9 @@ public class Admin_Page extends JFrame implements ActionListener {
 
                 }
             }
+            
+//A: sends "Terminate" signal to the server, closes the connection and exits progrma
+   
         } else if (e.getSource() == btnExit || e.getSource() == btnExitStud) {
             try {
                 con.sendData("Terminate");
@@ -168,6 +177,9 @@ public class Admin_Page extends JFrame implements ActionListener {
             } catch (IOException ex) {
                 Logger.getLogger(Login_Page.class.getName()).log(Level.SEVERE, null, ex);
             }
+            
+//A: gets the selected student from the list of students, sends a request to delete the student record to the server, and updates the list of students. 
+//The server's response is displayed.
         } else if(e.getSource() == btnDelete){
             int i = lstStuds.getSelectedIndex();
             try {
