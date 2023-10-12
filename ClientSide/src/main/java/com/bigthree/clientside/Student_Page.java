@@ -36,6 +36,8 @@ public class Student_Page extends JFrame implements ActionListener {
     private ArrayList<Enrolled> displayEn;
 
 //A: when loaded student object and server connection parsed to student page
+//A: initializes a connection to the server.
+//A: It also fetches the list of available courses and enrolled courses for the student.
     public Student_Page(Student stud, ServerConnection con) throws IOException, ClassNotFoundException {
 
         this.con = con;
@@ -96,7 +98,8 @@ public class Student_Page extends JFrame implements ActionListener {
 
     }
 
-//A: this populates courses list and enrolled list
+//A: this populates list of available courses and enrolled courses/
+//A: communicates with server to retrieve this information and updates UI
     public void populateStud() throws IOException, ClassNotFoundException {
 //A: if courses are null =
         if (display == null) {
@@ -117,7 +120,7 @@ public class Student_Page extends JFrame implements ActionListener {
             dmlEnrolled.addElement("No enrollments.");
             allEnrolled.setEnabled(false);
 
-//A: else displays array list of courses
+//A: else displays array list of enrolled courses
         } else {
             dmlEnrolled.clear();
             for (var i : displayEn) {
@@ -128,7 +131,9 @@ public class Student_Page extends JFrame implements ActionListener {
         }
     }
 
-//A: newenrolled object is created parse login student, gets arraylist of courses and gets user selected course
+//A: it creates a NewEnroll object with the logged-in student and the selected course from the list. 
+//A: It sends this object to the server for enrollment
+//A: The server's response is displayed, and if enrollment is successful, the list of enrolled courses is updated.
     @Override
     public void actionPerformed(ActionEvent e) {
         if (e.getSource() == btnRegister) {
