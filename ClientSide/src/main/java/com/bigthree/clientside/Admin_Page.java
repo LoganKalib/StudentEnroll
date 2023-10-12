@@ -138,6 +138,7 @@ public class Admin_Page extends JFrame implements ActionListener {
                     txtStudSurname.setText("");
                     txtStudNumber.setText("");
                     txtStudPassword.setText("");
+                    populateStuds();
                 } catch (Exception ex) {
                     JOptionPane.showMessageDialog(null, "Not a valid Student ID");
                 }
