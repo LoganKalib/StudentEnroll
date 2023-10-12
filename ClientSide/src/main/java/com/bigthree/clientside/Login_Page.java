@@ -65,8 +65,10 @@ public class Login_Page extends JFrame implements ActionListener {
     @Override
     public void actionPerformed(ActionEvent e) {
         
-//A: checks if credentials are null else create boolean x to parse value and check if integer or string , if int = stud if str = admin
-        if (e.getSource() == btnLogin) {
+//A: checks if user and password fields are not null
+//A: determines whether the user is student or admin based on input
+//A: if username is parsed as an integer, its student else its admin
+if (e.getSource() == btnLogin) {
             if (txtUsername.getText().isBlank() || txtPassword.getText().isBlank()) {
                 JOptionPane.showMessageDialog(null, "Please make sure that your login details are entered");
             } else {
@@ -78,7 +80,8 @@ public class Login_Page extends JFrame implements ActionListener {
                     x = false;
                 }
 
-//A: if x = T creates student obj and gets text from values entered sends obj server which verifies, if null etc
+//A: Student or admin obj created with the entered credentials
+//A: sent to server for authentication.
                 if (x) {
                     
                     Student login = new Student(txtPassword.getText(), Integer.parseInt(txtUsername.getText()));
@@ -95,8 +98,7 @@ public class Login_Page extends JFrame implements ActionListener {
                         Logger.getLogger(Login_Page.class.getName()).log(Level.SEVERE, null, ex);
                     }
                     
-//A: else if x = F creates admin obj get text sends to server for verification and return if user exists
-                } else {
+              } else {
                     Admin login = new Admin(txtPassword.getText(), txtUsername.getText());
                     try {
                         Admin fromServer = con.getAdminLogin(login);
@@ -114,8 +116,9 @@ public class Login_Page extends JFrame implements ActionListener {
 
             }
             
-//A: btn exit gets method to terminate program
-        } else if(e.getSource() == btnExit){
+//A: sends "Terminate" signal to the server, closes the connection and exits progrma
+   
+} else if(e.getSource() == btnExit){
             try {
                 con.sendData("Terminate");
                 con.closeAll();

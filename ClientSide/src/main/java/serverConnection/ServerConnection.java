@@ -18,38 +18,40 @@ public final class ServerConnection {
     private ObjectOutputStream out;
     private ObjectInputStream in;
 
-//A: makes connection to server via port number 12345 and calls getStreams() method
-//A: check clientside page LOADS and login PAGE CONNECTS
+//A: Constructor method for establishing a conn to the server.
+//A: Creates a socket conn to the server with IP and port number
+//A: Initializes I/O streams for communication with the server.
     public ServerConnection() throws IOException, ClassNotFoundException {
         server = new Socket("127.0.0.1", 12345);
         getStreams();
     }
 
-//A: getStreams() method creates steams between client and server 
+//A: Creates the I/O streams for communication with the server 
     private void getStreams() throws IOException {
         out = new ObjectOutputStream(server.getOutputStream());
         out.flush();
         in = new ObjectInputStream(server.getInputStream());
     }
 
-//A: sentData() method uses to send terminate to server check action performed
+//A: Sends a message of type String to the server
     public void sendData(String myMsg) throws IOException {
         out.writeObject(myMsg);
         out.flush();
     }
 
+//A: Closes the socket connection, I/O streams 
     public void closeAll() throws IOException {
         server.close();
         in.close();
         out.close();
     }
 
-//A: getStudLogin() method sends stud obj and recieves stud from server
+//A: Sends student obj to server for login and recieves student obj from server after authentication
     public Student getStudLogin(Student stud) throws IOException, ClassNotFoundException {
         out.writeObject(stud);
         out.flush();
 
-//A: check if obj is student from server else null
+//A: Performs authentication on the server and returns authenticated student obj
         try {
             Student fromServer = (Student) in.readObject();
             return fromServer;
@@ -58,7 +60,7 @@ public final class ServerConnection {
         }
     }
 
-//A: same as student    
+//A: same as student login    
     public Admin getAdminLogin(Admin admin) throws IOException, ClassNotFoundException {
         out.writeObject(admin);
         out.flush();
@@ -70,12 +72,11 @@ public final class ServerConnection {
         }
     }
 
-//A: getCourses() sends string request to server to get course and recieves array of courses    
+//A: Sends request to the server to retrieve a list of courses
+//A: Receives an ArrayList of Courses obj in return
     public ArrayList<Courses> getCourses() throws IOException {
         out.writeObject((String) "getCourses");
         out.flush();
-
-//A: creates array of courses
         ArrayList<Courses> reArr = new ArrayList();
         try {
             reArr = (ArrayList<Courses>) in.readObject();
@@ -85,7 +86,8 @@ public final class ServerConnection {
         }
     }
 
-//A: sends request to get enrolled courses in array check populateStud() in student page
+//A: Sends a request to the server to retrieve a list of enrolled courses for a student
+//A: Receives and ArrayList of Enrolled obj    
     public ArrayList<Enrolled> getEnrolled() throws IOException, ClassNotFoundException {
         out.writeObject((String) "getEnrolled");
         out.flush();
@@ -98,7 +100,7 @@ public final class ServerConnection {
         }
     }
 
-//A: sends new enrollments obj to server recieve a string from server
+//A: Sends a NewEnroll obj to the server to enroll a student in a course and receives a success string as a response
     public String newEnroll(NewEnroll obj) throws IOException, ClassNotFoundException {
         out.writeObject(obj);
         out.flush();
@@ -106,28 +108,29 @@ public final class ServerConnection {
 
     }
 
-//A: send new student obj to server recieves success string 
+//A: Sends a student obj to server to register a new student and recieves a success string in response
     public String newStudent(Student obj) throws IOException, ClassNotFoundException {
         out.writeObject(obj);
         out.flush();
         return (String) in.readObject();
     }
 
-//A: sends new course obj recieves success string    
+//A: Sends a course obj to the server to create a new course and receives success string    
     public String newCourse(Courses obj) throws IOException, ClassNotFoundException {
         out.writeObject(obj);
         out.flush();
         return (String) in.readObject();
     }
 
-//A: writes string to database and return arraylist of students    
+//A: sends request to the server to retrieve a list of students
+//A: receives an ArrayList of Student obj
     public ArrayList<Student> listStuds(String fetch) throws IOException, ClassNotFoundException {
         out.writeObject(fetch);
         out.flush();
         return (ArrayList<Student>) in.readObject();
     }
 
-//A:  sends stud obj sets delete to true returns success string  
+//A:  sends request to unenroll a student record on the server, success string  
     public String deleteStud(Student stud) throws IOException, ClassNotFoundException {
         stud.setDelete(true);
         out.writeObject(stud);
@@ -135,7 +138,7 @@ public final class ServerConnection {
         return (String) in.readObject();
     }
 
-//A: sends enrolled obj sets delete to true returns success string
+//A: sends request to unenroll a student from a course on the server and recieves a success string
     public String deleteEnroll(Enrolled obj) throws IOException, ClassNotFoundException {
         obj.setDelete(true);
         out.writeObject(obj);
